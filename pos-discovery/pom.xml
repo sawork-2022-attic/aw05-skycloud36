@@ -11,5 +11,18 @@
 
     <artifactId>pos-discovery</artifactId>
 
+    <dependencies>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-web</artifactId>
+        </dependency>
+        <!--为服务注册中心引入 Eureka Server 的依赖-->
+        <dependency>
+            <groupId>org.springframework.cloud</groupId>
+            <artifactId>spring-cloud-starter-netflix-eureka-server</artifactId>
+            <version>3.1.1</version>
+        </dependency>
+    </dependencies>
+
 
 </project>
