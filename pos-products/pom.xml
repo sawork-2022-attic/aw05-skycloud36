@@ -53,6 +53,10 @@
             <artifactId>spring-cloud-starter-netflix-eureka-client</artifactId>
             <version>3.1.2</version>
         </dependency>
+        <dependency>
+            <groupId>jakarta.transaction</groupId>
+            <artifactId>jakarta.transaction-api</artifactId>
+        </dependency>
     </dependencies>
 
     <build>

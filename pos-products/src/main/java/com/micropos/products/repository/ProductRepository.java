@@ -11,4 +11,6 @@ public interface ProductRepository {
 
     public Product findProduct(String productId);
 
+    public void addProduct(Product product);
+
 }

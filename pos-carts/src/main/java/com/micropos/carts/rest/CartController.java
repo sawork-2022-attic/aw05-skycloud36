@@ -3,7 +3,9 @@ package com.micropos.carts.rest;
 import com.micropos.carts.api.CartsApi;
 import com.micropos.carts.dto.CartDto;
 import com.micropos.carts.mapper.CartMapper;
+import com.micropos.carts.model.Cart;
 import com.micropos.carts.service.CartService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -15,23 +17,12 @@ import java.util.List;
 @RestController
 @RequestMapping("api")
 public class CartController implements CartsApi {
-    private final CartMapper cartMapper;
+    @Autowired
+    private CartMapper cartMapper;
 
-    private final CartService cartService;
+    @Autowired
+    private CartService cartService;
 
-    public CartController(CartMapper cartMapper, CartService cartService) {
-        this.cartMapper = cartMapper;
-        this.cartService = cartService;
-    }
-
-//    @Override
-//    public ResponseEntity<CartDto> showCartById(){
-//        List<CartDto> cartDtos = new ArrayList<>(cartMapper.toMapDto(this.cartMapper.products()));
-//        if (cartDtos.isEmpty()) {
-//            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-//        }
-//        return new ResponseEntity<>(products, HttpStatus.OK);
-//    }
 
     @Override
     public ResponseEntity<List<CartDto>> listCarts(){
@@ -40,5 +31,34 @@ public class CartController implements CartsApi {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
         return new ResponseEntity<>(products, HttpStatus.OK);
+    }
+
+    @Override
+    public ResponseEntity<CartDto> showCartById(Integer cartId){
+        CartDto cart = cartMapper.toCartDto(this.cartService.getCart(cartId));
+        if (cart == null) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+        return new ResponseEntity<>(cart, HttpStatus.OK);
+    }
+
+    @Override
+    public ResponseEntity<Double> sumCost(Integer id){
+        return new ResponseEntity<>(cartService.sumCost(id), HttpStatus.OK);
+    }
+
+    @Override
+    public ResponseEntity<CartDto> addCart(String username){
+        Cart cart = cartService.addCart(username);
+        return new ResponseEntity<>(cartMapper.toCartDto(cart),HttpStatus.OK);
+    }
+
+    @Override
+    public ResponseEntity<CartDto> addItem(Integer cartId, String productId){
+        Cart cart = cartService.addItem(cartId, productId);
+        if(cart == null){
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+        return new ResponseEntity<>(cartMapper.toCartDto(cart),HttpStatus.OK);
     }
 }

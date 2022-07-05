@@ -1,7 +1,9 @@
 package com.micropos.carts;
 
 import com.micropos.carts.model.Cart;
+import com.micropos.carts.model.Item;
 import com.micropos.carts.repository.CartRepository;
+import com.micropos.carts.repository.ItemRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,7 +18,9 @@ public class MyRunner implements CommandLineRunner {
     private static final Logger logger = LoggerFactory.getLogger(MyRunner.class);
 
     @Autowired
-    private CartRepository userRepository;
+    private CartRepository cartRepository;
+    @Autowired
+    private ItemRepository itemRepository;
 
     @Override
     @Transactional
@@ -24,13 +28,28 @@ public class MyRunner implements CommandLineRunner {
 
         logger.info("initializing users");
 
-        Cart u1 = new Cart(1, "Tony");
-        userRepository.save(u1);
+        Cart u1 = new Cart();
+        u1.setUser("Tony");
+        cartRepository.save(u1);
+        Item item = new Item();
+        item.setProductId("001");
+        item.setQuantity(10);
+        u1.addItem(item);
+        item = new Item();
+        item.setProductId("002");
+        item.setQuantity(10);
+        u1.addItem(item);
 
-        Cart u2 = new Cart(2,"Aily");
-        userRepository.save(u2);
+        Cart u2 = new Cart();
+        u2.setUser("AiLy");
+        cartRepository.save(u2);
+        item = new Item();
+        item.setProductId("003");
+        item.setQuantity(10);
+        u2.addItem(item);
 
-        Cart u3 = new Cart(3,"Bob");
-        userRepository.save(u3);
+        Cart u3 = new Cart();
+        u3.setUser("Bob");
+        cartRepository.save(u3);
     }
 }

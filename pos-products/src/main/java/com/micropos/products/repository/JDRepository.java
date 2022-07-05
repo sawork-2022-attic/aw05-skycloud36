@@ -31,6 +31,7 @@ public class JDRepository implements ProductRepository {
     public Product findProduct(String productId) {
         for (Product p : allProducts()) {
             if (p.getId().equals(productId)) {
+                System.out.println(p);
                 return p;
             }
         }
@@ -56,5 +57,16 @@ public class JDRepository implements ProductRepository {
             list.add(product);
         }
         return list;
+    }
+
+    @Override
+    public void addProduct(Product product){
+        try {
+        if (products == null)
+            products = parseJD("Java");
+        } catch (IOException e) {
+            products = new ArrayList<>();
+        }
+        this.products.add(product);
     }
 }

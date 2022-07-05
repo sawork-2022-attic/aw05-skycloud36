@@ -36,6 +36,58 @@ paths:
           required: true
           description: The id of the cart to retrieve
           schema:
+            type: integer
+      responses:
+        '200':
+          description: Expected response to a valid request
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Cart"
+        default:
+          description: unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+  /carts/sum/{cartId}:
+    get:
+      summary: cost
+      operationId: sumCost
+      tags:
+        - cartCost
+      parameters:
+        - name: cartId
+          in: path
+          required: true
+          description: The id of the cart to sum
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Expected response to a valid request
+          content:
+            application/json:
+              schema:
+                type: double
+        default:
+          description: unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+  /carts/add/cart/{username}:
+    post:
+      summary: add a new Cart
+      operationId: addCart
+      tags:
+        - cart
+      parameters:
+        - name: username
+          in: path
+          required: true
+          description: The name of the user
+          schema:
             type: string
       responses:
         '200':
@@ -50,6 +102,40 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/Error"
+
+  /carts/add/item/{cartId}/{productId}:
+    post:
+      summary: add a new Item to Cart
+      operationId: addItem
+      tags:
+        - cart
+      parameters:
+        - name: cartId
+          in: path
+          required: true
+          description: The id of the cart
+          schema:
+            type: integer
+        - name: productId
+          in: path
+          required: true
+          description: The id of the product
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Expected response to a valid request
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Cart"
+        default:
+          description: unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+
 components:
   schemas:
     Carts:
@@ -62,10 +148,10 @@ components:
         id:
           type: integer
           format: int32
-#        cartItems:
-#          type: array
-#          items:
-#            $ref: "#/components/schemas/Item"
+        cartItems:
+          type: array
+          items:
+            $ref: "#/components/schemas/Item"
         user:
           type: string
     Item:
